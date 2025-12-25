@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Grocery Recommender By Hafiz Abdullah</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Custom Styles for AI Grocery Recommender - Minimal Black & White */
+        :root {
+            --black: #1a1a1a;
+            --white: #ffffff;
+            --gray-light: #f8f9fa;
+            --gray-medium: #e9ecef;
+            --gray-dark: #6c757d;
+            --accent: #4a6bff;
+            --accent-light: #6d8cff;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #ff6b6b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--white);
+            color: var(--black);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .navbar {
+            background-color: var(--white);
+            border-bottom: 1px solid var(--gray-medium);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--black);
+        }
+
+        .navbar-brand i {
+            color: var(--accent);
+        }
+
+        .navbar-text {
+            font-size: 0.85rem;
+            color: var(--gray-dark);
+        }
+
+        /* Cards */
+        .card {
+            border: 1px solid var(--gray-medium);
+            border-radius: 12px;
+            background: var(--white);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            background-color: var(--white);
+            border-bottom: 1px solid var(--gray-medium);
+            padding: 16px 20px;
+            font-weight: 600;
+            color: var(--black);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .card-header i {
+            color: var(--accent);
+            margin-right: 8px;
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--gray-medium);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(74, 107, 255, 0.1);
+        }
+
+        .stat-number {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: var(--white);
+            border: 1px solid var(--gray-medium);
+            border-radius: 10px;
+            padding: 16px;
+            height: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(74, 107, 255, 0.08);
+        }
+
+        .product-image {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 20px;
+            margin: 0 auto 12px;
+            box-shadow: 0 4px 8px rgba(74, 107, 255, 0.2);
+        }
+
+        .product-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--black);
+            margin-bottom: 6px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .product-category {
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .product-price {
+            color: var(--black);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .product-rating {
+            color: var(--warning);
+            font-size: 0.8rem;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .product-rating i {
+            margin-right: 1px;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--gray-dark);
+            margin-bottom: 12px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: var(--white);
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-light);
+            border-color: var(--accent-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(74, 107, 255, 0.2);
+        }
+
+        .btn-outline-primary {
+            color: var(--accent);
+            border-color: var(--accent);
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+            border-color: var(--warning);
+            color: var(--black);
+        }
+
+        .btn-outline-danger {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .btn-outline-danger:hover {
+            background-color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        /* Add to Cart Button */
+        .btn-add {
+            background-color: var(--white);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 8px 12px;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-add:hover {
+            background-color: var(--accent);
+            color: var(--white);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(74, 107, 255, 0.2);
+        }
+
+        .btn-add.added {
+            background-color: var(--success);
+            color: var(--white);
+            border-color: var(--success);
+        }
+
+        /* Selected Items */
+        .selected-item {
+            background-color: var(--gray-light);
+            border: 1px solid var(--gray-medium);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .selected-item:hover {
+            border-color: var(--accent);
+            background-color: rgba(74, 107, 255, 0.05);
+        }
+
+        /* Recommendations */
+        .recommendation-card {
+            background-color: var(--gray-light);
+            border: 1px solid var(--gray-medium);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .recommendation-score {
+            background-color: var(--accent);
+            color: var(--white);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Search & Filter */
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding-left: 40px;
+            border: 1px solid var(--gray-medium);
+            border-radius: 8px;
+            background-color: var(--white);
+            color: var(--black);
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-dark);
+            z-index: 1;
+        }
+
+        .form-select {
+            border: 1px solid var(--gray-medium);
+            border-radius: 8px;
+            background-color: var(--white);
+            color: var(--black);
+        }
+
+        .form-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.1);
+        }
+
+        /* Badges */
+        .badge {
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+        }
+
+        .badge-info {
+            background-color: rgba(74, 107, 255, 0.1);
+            color: var(--accent);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--white);
+            border-top: 1px solid var(--gray-medium);
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        /* Toast */
+        .toast {
+            border: 1px solid var(--gray-medium);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .loading-spinner .spinner-border {
+            color: var(--accent);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-medium);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-dark);
+        }
+
+        /* How It Works */
+        .how-it-works ol {
+            padding-left: 1.2rem;
+        }
+
+        .how-it-works li {
+            margin-bottom: 10px;
+            color: var(--black);
+        }
+
+        .alert-info {
+            background-color: rgba(74, 107, 255, 0.05);
+            border-color: rgba(74, 107, 255, 0.2);
+            color: var(--black);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .product-card {
+                padding: 12px;
+            }
+            
+            .card-header {
+                padding: 12px 16px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-robot"></i>
+                AI Grocery Recommender
+            </a>
+            <div class="navbar-text">
+                <small>By Hafiz Abdullah | K-Nearest Neighbors Algorithm</small>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container mt-4">
+        <!-- Stats Row -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-number" id="productCount">100</div>
+                    <div class="stat-label">Total Products</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-number" id="categoryCount">10</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-number" id="selectedCount">0</div>
+                    <div class="stat-label">Selected Items</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Sidebar - Search & Selection -->
+            <div class="col-lg-3 col-md-4">
+                <!-- Search Box -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-search"></i> Search Products
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" class="form-control" id="searchInput" placeholder="Search products...">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Filter by Category:</label>
+                            <select class="form-select" id="categoryFilter">
+                                <option value="All">All Categories</option>
+                                <!-- Categories will be loaded dynamically -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selected Products -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-shopping-cart"></i> Selected Products
+                        <span class="badge bg-dark text-white ms-2" id="selectedBadge">0</span>
+                    </div>
+                    <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                        <div id="selectedProducts">
+                            <p class="text-muted text-center mb-0 small">No products selected yet</p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-top">
+                        <button class="btn btn-primary w-100 mb-2" id="getRecommendationsBtn" disabled>
+                            <i class="fas fa-magic me-2"></i> Get AI Recommendations
+                        </button>
+                        <button class="btn btn-outline-danger w-100" id="clearSelectionBtn">
+                            <i class="fas fa-trash me-2"></i> Clear Selection
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Column - Products -->
+            <div class="col-lg-6 col-md-8">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-store"></i> Available Products</span>
+                        <small class="text-muted" id="displayCount">Loading...</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3" id="productsGrid">
+                            <div class="col-12">
+                                <div class="loading-spinner">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="mt-2 mb-0 text-muted">Loading products...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar - Recommendations -->
+            <div class="col-lg-3">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <i class="fas fa-lightbulb"></i> AI Recommendations
+                    </div>
+                    <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                        <div id="recommendationsContainer">
+                            <div class="text-center text-muted py-4">
+                                <i class="fas fa-robot fa-2x mb-3"></i>
+                                <p class="mb-2 small">Select products and click "Get AI Recommendations"</p>
+                                <small class="text-muted">Based on K-Nearest Neighbors algorithm</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How It Works -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line"></i> How It Works
+                    </div>
+                    <div class="card-body">
+                        <div class="how-it-works">
+                            <ol class="small mb-3">
+                                <li>Select products you like</li>
+                                <li>Click "Get AI Recommendations"</li>
+                                <li>AI analyzes product features</li>
+                                <li>Finds similar items using KNN</li>
+                                <li>Shows personalized suggestions</li>
+                            </ol>
+                            <div class="alert alert-info small mb-0">
+                                <i class="fas fa-brain me-1"></i>
+                                <strong>KNN Algorithm:</strong> Finds products with similar features
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p class="mb-2">
+                <i class="fas fa-code me-1"></i> AI Grocery Recommendation System
+                <span class="mx-2">•</span>
+                <i class="fas fa-brain me-1"></i> KNN Algorithm
+                <span class="mx-2">•</span>
+                <i class="fas fa-user me-1"></i> By Hafiz Abdullah
+            </p>
+            <small class="text-muted">Select products to get intelligent recommendations</small>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script>
+        // AI Grocery Recommender - Main Application Script
+        
+        console.log('🚀 AI Grocery Recommender Initializing...');
+        
+        // Global variables
+        let allProducts = [];
+        let selectedProducts = [];
+        let categories = [];
+        
+        // API Configuration
+        const API_CONFIG = {
+            baseURL: 'http://localhost:5000/api',
+            endpoints: {
+                products: '/products',
+                categories: '/categories',
+                recommend: '/recommend',
+                stats: '/stats',
+                test: '/test'
+            }
+        };
+        
+        // Category icons mapping - cute icons for black & white theme
+        const CATEGORY_ICONS = {
+            'Fruits': 'fa-apple-alt',
+            'Vegetables': 'fa-carrot',
+            'Dairy': 'fa-cheese',
+            'Bakery': 'fa-bread-slice',
+            'Meat': 'fa-drumstick-bite',
+            'Beverages': 'fa-wine-bottle',
+            'Snacks': 'fa-cookie-bite',
+            'Frozen': 'fa-snowflake',
+            'Personal Care': 'fa-spray-can',
+            'Grains': 'fa-seedling'
+        };
+        
+        // DOM Elements
+        const elements = {
+            productsGrid: document.getElementById('productsGrid'),
+            selectedProducts: document.getElementById('selectedProducts'),
+            selectedCount: document.getElementById('selectedCount'),
+            selectedBadge: document.getElementById('selectedBadge'),
+            categoryFilter: document.getElementById('categoryFilter'),
+            searchInput: document.getElementById('searchInput'),
+            searchBtn: document.getElementById('searchBtn'),
+            getRecommendationsBtn: document.getElementById('getRecommendationsBtn'),
+            clearSelectionBtn: document.getElementById('clearSelectionBtn'),
+            productCount: document.getElementById('productCount'),
+            categoryCount: document.getElementById('categoryCount'),
+            recommendationsContainer: document.getElementById('recommendationsContainer'),
+            displayCount: document.getElementById('displayCount'),
+            toastContainer: document.getElementById('toastContainer')
+        };
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📱 Application Loaded');
+            
+            // Initialize all components
+            initializeApp();
+        });
+        
+        // Initialize application
+        async function initializeApp() {
+            try {
+                // Setup event listeners
+                setupEventListeners();
+                
+                // Load initial data
+                await loadCategories();
+                await loadProducts();
+                
+                // Update statistics
+                await updateStatistics();
+                
+                showToast('AI Grocery Recommender is ready!', 'success');
+                
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showToast('Error initializing application', 'danger');
+            }
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search input typing
+            elements.searchInput.addEventListener('input', debounce(() => {
+                const query = elements.searchInput.value.trim();
+                const category = elements.categoryFilter.value;
+                loadProducts(query, category);
+            }, 300));
+            
+            // Search button click
+            document.querySelector('.search-box').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const query = elements.searchInput.value.trim();
+                const category = elements.categoryFilter.value;
+                loadProducts(query, category);
+            });
+            
+            // Category filter change
+            elements.categoryFilter.addEventListener('change', () => {
+                const query = elements.searchInput.value.trim();
+                const category = elements.categoryFilter.value;
+                loadProducts(query, category);
+            });
+            
+            // Get recommendations button
+            elements.getRecommendationsBtn.addEventListener('click', getRecommendations);
+            
+            // Clear selection button
+            elements.clearSelectionBtn.addEventListener('click', clearSelection);
+        }
+        
+        // Debounce function for search
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Load categories from API
+        async function loadCategories() {
+            try {
+                console.log('Loading categories...');
+                
+                const response = await fetch(`${API_CONFIG.baseURL}${API_CONFIG.endpoints.categories}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    categories = data.categories;
+                    console.log('Categories loaded:', categories);
+                    populateCategoryFilter();
+                } else {
+                    throw new Error(data.error || 'Failed to load categories');
+                }
+                
+            } catch (error) {
+                console.error('Error loading categories:', error);
+                // Use default categories
+                categories = Object.keys(CATEGORY_ICONS);
+                populateCategoryFilter();
+                showToast('Using default categories', 'warning');
+            }
+        }
+        
+        // Populate category filter dropdown
+        function populateCategoryFilter() {
+            elements.categoryFilter.innerHTML = '<option value="All">All Categories</option>';
+            
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                elements.categoryFilter.appendChild(option);
+            });
+        }
+        
+        // Load products from API
+        async function loadProducts(query = '', category = 'All') {
+            try {
+                showLoading('products');
+                
+                // Build query parameters
+                const params = new URLSearchParams();
+                if (query) params.append('q', query);
+                if (category && category !== 'All') params.append('category', category);
+                
+                const url = `${API_CONFIG.baseURL}${API_CONFIG.endpoints.products}${params.toString() ? '?' + params.toString() : ''}`;
+                
+                console.log('Fetching products from:', url);
+                
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    allProducts = data.products;
+                    console.log(`Loaded ${allProducts.length} products`);
+                    renderProducts(allProducts);
+                    updateDisplayCount(allProducts.length);
+                } else {
+                    throw new Error(data.error || 'Failed to load products');
+                }
+                
+            } catch (error) {
+                console.error('Error loading products:', error);
+                elements.productsGrid.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-exclamation-triangle fa-2x mb-3 text-danger"></i>
+                        <p class="text-danger">Failed to load products</p>
+                        <p class="text-muted small mb-3">${error.message}</p>
+                        <button class="btn btn-primary btn-sm" onclick="loadProducts()">
+                            <i class="fas fa-redo me-1"></i> Retry
+                        </button>
+                    </div>
+                `;
+                showToast('Failed to load products', 'danger');
+            }
+        }
+        
+        // Render products grid
+        function renderProducts(products) {
+            if (!products || products.length === 0) {
+                elements.productsGrid.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-search fa-2x mb-3 text-muted"></i>
+                        <p class="text-muted">No products found</p>
+                        <p class="text-muted small">Try adjusting your search criteria</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            elements.productsGrid.innerHTML = '';
+            
+            products.forEach(product => {
+                const isSelected = selectedProducts.some(p => p.id === product.id);
+                const categoryIcon = CATEGORY_ICONS[product.category] || 'fa-shopping-basket';
+                
+                const productCard = document.createElement('div');
+                productCard.className = 'col-md-6 col-lg-4 mb-3 fade-in';
+                productCard.innerHTML = `
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas ${categoryIcon}"></i>
+                        </div>
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-category">
+                            <span class="badge badge-info">${product.category}</span>
+                        </div>
+                        <div class="product-price">$${product.price.toFixed(2)}</div>
+                        <div class="product-rating">
+                            ${generateStarRating(product.rating)}
+                            <small class="text-muted ms-1">(${product.rating})</small>
+                        </div>
+                        <div class="product-meta">
+                            <span><i class="fas fa-chart-line me-1"></i>${product.popularity}</span>
+                            <span><i class="fas fa-hashtag me-1"></i>${product.id}</span>
+                        </div>
+                        <button class="btn-add ${isSelected ? 'added' : ''}" 
+                                onclick="toggleProductSelection(${product.id})"
+                                data-product-id="${product.id}">
+                            <i class="fas ${isSelected ? 'fa-check' : 'fa-plus'}"></i>
+                            ${isSelected ? 'Added to Cart' : 'Add to Cart'}
+                        </button>
+                    </div>
+                `;
+                
+                elements.productsGrid.appendChild(productCard);
+            });
+        }
+        
+        // Generate star rating HTML
+        function generateStarRating(rating) {
+            let stars = '';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            
+            // Full stars
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            
+            // Half star
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            // Empty stars
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            
+            return stars;
+        }
+        
+        // Toggle product selection
+        function toggleProductSelection(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            
+            if (!product) {
+                console.error('Product not found:', productId);
+                showToast('Product not found', 'danger');
+                return;
+            }
+            
+            // Check if product is already selected
+            const existingIndex = selectedProducts.findIndex(p => p.id === productId);
+            
+            if (existingIndex === -1) {
+                // Add product to selection
+                selectedProducts.push(product);
+                showToast(`Added ${product.name} to selection`, 'success');
+            } else {
+                // Remove product from selection
+                selectedProducts.splice(existingIndex, 1);
+                showToast(`Removed ${product.name} from selection`, 'warning');
+            }
+            
+            updateSelectionUI();
+            updateProductButtons();
+        }
+        
+        // Update selection UI
+        function updateSelectionUI() {
+            const count = selectedProducts.length;
+            
+            // Update counters
+            elements.selectedCount.textContent = count;
+            elements.selectedBadge.textContent = count;
+            
+            // Update recommendations button
+            elements.getRecommendationsBtn.disabled = count === 0;
+            elements.getRecommendationsBtn.innerHTML = count === 0 
+                ? '<i class="fas fa-magic me-2"></i> Get AI Recommendations'
+                : `<i class="fas fa-magic me-2"></i> Get Recommendations (${count})`;
+            
+            // Update selected products list
+            if (count === 0) {
+                elements.selectedProducts.innerHTML = '<p class="text-muted text-center mb-0 small">No products selected yet</p>';
+            } else {
+                let html = '';
+                selectedProducts.forEach(product => {
+                    const categoryIcon = CATEGORY_ICONS[product.category] || 'fa-shopping-basket';
+                    
+                    html += `
+                        <div class="selected-item">
+                            <div class="d-flex align-items-center">
+                                <i class="fas ${categoryIcon} me-2 text-primary"></i>
+                                <div>
+                                    <div class="fw-bold small">${product.name}</div>
+                                    <small class="text-muted">${product.category} • $${product.price.toFixed(2)}</small>
+                                </div>
+                            </div>
+                            <button class="btn btn-sm btn-outline-danger" 
+                                    onclick="removeSelectedProduct(${product.id})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                elements.selectedProducts.innerHTML = html;
+            }
+        }
+        
+        // Update product buttons state
+        function updateProductButtons() {
+            // Update all product buttons
+            const buttons = document.querySelectorAll('.btn-add');
+            buttons.forEach(button => {
+                const productId = parseInt(button.getAttribute('data-product-id'));
+                const isSelected = selectedProducts.some(p => p.id === productId);
+                
+                if (isSelected) {
+                    button.classList.add('added');
+                    button.innerHTML = '<i class="fas fa-check"></i> Added to Cart';
+                } else {
+                    button.classList.remove('added');
+                    button.innerHTML = '<i class="fas fa-plus"></i> Add to Cart';
+                }
+            });
+        }
+        
+        // Remove selected product
+        function removeSelectedProduct(productId) {
+            selectedProducts = selectedProducts.filter(p => p.id !== productId);
+            updateSelectionUI();
+            updateProductButtons();
+            showToast('Product removed from selection', 'warning');
+        }
+        
+        // Clear all selections
+        function clearSelection() {
+            if (selectedProducts.length === 0) {
+                showToast('No products to clear', 'info');
+                return;
+            }
+            
+            selectedProducts = [];
+            updateSelectionUI();
+            updateProductButtons();
+            showToast('All products removed from selection', 'info');
+        }
+        
+        // Get AI recommendations
+        async function getRecommendations() {
+            if (selectedProducts.length === 0) {
+                showToast('Please select at least one product first', 'warning');
+                return;
+            }
+            
+            try {
+                // Show loading state
+                elements.recommendationsContainer.innerHTML = `
+                    <div class="text-center py-4">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2 text-muted">AI is analyzing your selections...</p>
+                        <small class="text-muted">Using K-Nearest Neighbors algorithm</small>
+                    </div>
+                `;
+                
+                // Prepare request data
+                const requestData = {
+                    selected_products: selectedProducts.map(p => p.name)
+                };
+                
+                console.log('Requesting recommendations for:', requestData.selected_products);
+                
+                // Make API request
+                const response = await fetch(`${API_CONFIG.baseURL}${API_CONFIG.endpoints.recommend}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success && data.recommendations) {
+                    console.log('Received recommendations:', data.recommendations);
+                    renderRecommendations(data.recommendations);
+                    showToast(`Found ${data.recommendations.length} recommendations`, 'success');
+                } else {
+                    throw new Error(data.error || 'No recommendations received');
+                }
+                
+            } catch (error) {
+                console.error('Error getting recommendations:', error);
+                elements.recommendationsContainer.innerHTML = `
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                        <p>Failed to get recommendations</p>
+                        <small class="text-muted">${error.message}</small>
+                        <div class="mt-3">
+                            <button class="btn btn-primary btn-sm" onclick="getRecommendations()">
+                                <i class="fas fa-redo me-1"></i> Try Again
+                            </button>
+                        </div>
+                    </div>
+                `;
+                showToast('Failed to get recommendations', 'danger');
+            }
+        }
+        
+        // Render recommendations
+        function renderRecommendations(recommendations) {
+            if (!recommendations || recommendations.length === 0) {
+                elements.recommendationsContainer.innerHTML = `
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-lightbulb fa-2x mb-3"></i>
+                        <p>No recommendations found</p>
+                        <small class="text-muted">Try selecting different products</small>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '<div class="mb-3"><strong class="small">AI Suggestions:</strong></div>';
+            
+            recommendations.forEach(rec => {
+                const categoryIcon = CATEGORY_ICONS[rec.category] || 'fa-shopping-basket';
+                const isAlreadySelected = selectedProducts.some(p => p.id === rec.id);
+                
+                html += `
+                    <div class="recommendation-card">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                <div class="product-image" style="width: 40px; height: 40px; font-size: 18px;">
+                                    <i class="fas ${categoryIcon}"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <div class="fw-bold small">${rec.name}</div>
+                                        <div class="small text-muted">${rec.category}</div>
+                                    </div>
+                                    <span class="recommendation-score">${rec.score}%</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <span class="fw-bold">$${rec.price.toFixed(2)}</span>
+                                        <div class="product-rating small">
+                                            ${generateStarRating(rec.rating)}
+                                            <small class="text-muted ms-1">(${rec.rating})</small>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-sm ${isAlreadySelected ? 'btn-success' : 'btn-outline-primary'}" 
+                                            onclick="toggleProductSelection(${rec.id})"
+                                            ${isAlreadySelected ? 'disabled' : ''}>
+                                        <i class="fas ${isAlreadySelected ? 'fa-check' : 'fa-plus'}"></i>
+                                        ${isAlreadySelected ? 'Added' : 'Add'}
+                                    </button>
+                                </div>
+                                <div class="small text-muted d-flex justify-content-between">
+                                    <span><i class="fas fa-chart-line me-1"></i>${rec.popularity}</span>
+                                    <span><i class="fas fa-hashtag me-1"></i>${rec.id}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            elements.recommendationsContainer.innerHTML = html;
+        }
+        
+        // Update statistics
+        async function updateStatistics() {
+            try {
+                const response = await fetch(`${API_CONFIG.baseURL}${API_CONFIG.endpoints.stats}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.stats) {
+                        elements.productCount.textContent = data.stats.total_products || '100';
+                        elements.categoryCount.textContent = data.stats.total_categories || '10';
+                    }
+                }
+            } catch (error) {
+                console.log('Using default statistics');
+            }
+        }
+        
+        // Update display count
+        function updateDisplayCount(count) {
+            if (elements.displayCount) {
+                elements.displayCount.textContent = `Showing ${count} products`;
+            }
+        }
+        
+        // Show loading state
+        function showLoading(type) {
+            if (type === 'products') {
+                elements.productsGrid.innerHTML = `
+                    <div class="col-12">
+                        <div class="loading-spinner">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Loading products...</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            // Create toast element
+            const toastId = 'toast-' + Date.now();
+            const toast = document.createElement('div');
+            toast.id = toastId;
+            toast.className = `toast align-items-center border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            
+            // Background color based on type
+            const bgColor = type === 'success' ? 'bg-success' : 
+                           type === 'warning' ? 'bg-warning text-dark' : 
+                           type === 'danger' ? 'bg-danger' : 'bg-dark';
+            
+            toast.innerHTML = `
+                <div class="toast-body d-flex align-items-center ${bgColor} text-white rounded">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 
+                                  type === 'warning' ? 'fa-exclamation-triangle' : 
+                                  type === 'danger' ? 'fa-times-circle' : 'fa-info-circle'} me-2"></i>
+                    <span class="flex-grow-1">${message}</span>
+                    <button type="button" class="btn-close btn-close-white ms-3" 
+                            data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            
+            // Add toast to container
+            elements.toastContainer.appendChild(toast);
+            
+            // Initialize and show toast
+            const bsToast = new bootstrap.Toast(toast, { 
+                delay: 3000,
+                animation: true
+            });
+            bsToast.show();
+            
+            // Remove toast after it's hidden
+            toast.addEventListener('hidden.bs.toast', function() {
+                toast.remove();
+            });
+        }
+        
+        // Export functions to global scope
+        window.toggleProductSelection = toggleProductSelection;
+        window.removeSelectedProduct = removeSelectedProduct;
+        window.getRecommendations = getRecommendations;
+        window.loadProducts = loadProducts;
+    </script>
+</body>
+</html>

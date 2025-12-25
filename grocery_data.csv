@@ -1,0 +1,101 @@
+id,name,category,price,rating,popularity
+1,Apple,Fruits,4.82,4.9,93
+2,Banana,Fruits,4.19,4.7,96
+3,Orange,Fruits,3.86,4.4,92
+4,Grapes,Fruits,2.85,4.7,94
+5,Strawberries,Fruits,1.67,4.6,92
+6,Mango,Fruits,3.64,4.9,88
+7,Pineapple,Fruits,3.34,4.9,90
+8,Watermelon,Fruits,3.47,4.8,93
+9,Kiwi,Fruits,3.59,4.5,97
+10,Papaya,Fruits,1.07,4.7,89
+11,Carrot,Vegetables,0.65,4.1,81
+12,Tomato,Vegetables,0.6,4.5,91
+13,Potato,Vegetables,3.68,4.0,90
+14,Onion,Vegetables,3.14,4.5,86
+15,Broccoli,Vegetables,1.91,4.6,84
+16,Spinach,Vegetables,2.96,4.5,84
+17,Bell Pepper,Vegetables,3.95,4.2,90
+18,Cucumber,Vegetables,1.84,4.0,90
+19,Lettuce,Vegetables,1.62,4.6,93
+20,Cauliflower,Vegetables,0.89,4.8,94
+21,Milk,Dairy,6.4,4.9,93
+22,Eggs,Dairy,6.15,4.7,91
+23,Yogurt,Dairy,6.87,4.3,92
+24,Cheese,Dairy,2.45,4.5,91
+25,Butter,Dairy,5.26,4.6,93
+26,Cream,Dairy,7.81,4.5,88
+27,Cottage Cheese,Dairy,4.1,4.5,86
+28,Sour Cream,Dairy,2.58,4.7,88
+29,Mozzarella,Dairy,6.1,4.4,96
+30,Parmesan,Dairy,4.51,4.5,89
+31,Bread,Bakery,14.6,4.3,93
+32,Croissant,Bakery,8.6,4.6,79
+33,Bagel,Bakery,10.85,4.6,79
+34,Muffin,Bakery,8.63,4.6,77
+35,Donut,Bakery,4.16,4.5,80
+36,Cookies,Bakery,14.94,4.3,81
+37,Cake,Bakery,9.24,4.6,75
+38,Baguette,Bakery,6.4,4.2,92
+39,Pita Bread,Bakery,3.53,4.6,94
+40,Brown Bread,Bakery,19.35,4.6,85
+41,Chicken Breast,Meat,13.9,4.4,93
+42,Beef Steak,Meat,17.85,4.8,86
+43,Salmon,Meat,7.72,4.6,86
+44,Pork Chops,Meat,16.28,4.7,81
+45,Turkey,Meat,12.25,4.2,82
+46,Bacon,Meat,19.64,4.7,92
+47,Sausages,Meat,14.94,4.8,80
+48,Shrimp,Meat,6.27,4.6,88
+49,Tuna,Meat,7.72,4.6,90
+50,Cod Fillet,Meat,5.81,4.6,92
+51,Coffee,Beverages,8.04,4.4,93
+52,Tea,Beverages,7.84,4.4,88
+53,Orange Juice,Beverages,5.82,4.7,82
+54,Apple Juice,Beverages,2.27,4.2,93
+55,Water,Beverages,1.67,4.6,94
+56,Soda,Beverages,8.45,4.6,88
+57,Energy Drink,Beverages,4.93,4.2,83
+58,Green Tea,Beverages,4.08,4.2,94
+59,Iced Tea,Beverages,7.85,4.1,89
+60,Coffee Beans,Beverages,2.44,4.3,86
+61,Chips,Snacks,3.4,4.8,87
+62,Chocolate,Snacks,1.85,4.9,95
+63,Cookies,Snacks,4.79,4.7,89
+64,Popcorn,Snacks,3.63,4.8,90
+65,Nuts,Snacks,2.96,4.5,98
+66,Crackers,Snacks,3.1,4.3,87
+67,Granola Bar,Snacks,2.95,4.7,94
+68,Pretzels,Snacks,5.87,4.9,95
+69,Trail Mix,Snacks,6.97,4.6,94
+70,Chocolate Bar,Snacks,3.34,4.8,96
+71,Frozen Pizza,Frozen,12.99,4.7,94
+72,Ice Cream,Frozen,12.08,4.3,88
+73,Frozen Vegetables,Frozen,13.95,3.8,75
+74,Frozen Berries,Frozen,9.74,4.6,72
+75,Frozen Fries,Frozen,13.15,3.9,72
+76,Frozen Chicken,Frozen,9.97,3.8,94
+77,Frozen Fish,Frozen,4.09,4.4,92
+78,Frozen Lasagna,Frozen,13.51,4.7,75
+79,Frozen Waffles,Frozen,8.49,4.2,75
+80,Frozen Meals,Frozen,7.98,4.4,85
+81,Shampoo,Personal Care,7.24,4.5,81
+82,Soap,Personal Care,6.69,4.5,79
+83,Toothpaste,Personal Care,2.86,4.0,81
+84,Deodorant,Personal Care,8.45,4.4,83
+85,Lotion,Personal Care,9.84,4.7,75
+86,Razor,Personal Care,10.79,4.0,84
+87,Face Wash,Personal Care,9.47,4.3,89
+88,Sunscreen,Personal Care,14.12,4.8,80
+89,Shaving Cream,Personal Care,7.44,4.4,80
+90,Body Wash,Personal Care,9.74,4.6,83
+91,Rice,Grains,5.37,4.4,86
+92,Pasta,Grains,2.88,4.5,86
+93,Flour,Grains,6.64,4.5,80
+94,Sugar,Grains,1.06,4.7,88
+95,Cereal,Grains,4.78,4.4,92
+96,Oats,Grains,4.03,4.3,88
+97,Beans,Grains,7.68,4.4,80
+98,Lentils,Grains,7.26,4.4,78
+99,Quinoa,Grains,4.17,4.4,85
+100,Spices,Grains,6.65,4.6,83

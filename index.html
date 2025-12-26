@@ -902,24 +902,56 @@
         }
         
         // Use sample data
-        function useSampleData() {
-            categories = SAMPLE_CATEGORIES;
-            
-            // Generate more sample products
-            allProducts = [];
-            let id = 1;
-            SAMPLE_CATEGORIES.forEach(category => {
-                for (let i = 1; i <= 10; i++) {
-                    allProducts.push({
-                        id: id++,
-                        name: `${category} Product ${i}`,
-                        category: category,
-                        price: parseFloat((Math.random() * 10 + 1).toFixed(2)),
-                        rating: parseFloat((Math.random() * 1.5 + 3.5).toFixed(1)),
-                        popularity: ["Low", "Medium", "High"][Math.floor(Math.random() * 3)]
-                    });
-                }
-            });
+      // Use sample data
+function useSampleData() {
+    categories = SAMPLE_CATEGORIES;
+    
+    // Define actual food products for each category
+    const FOOD_PRODUCTS = {
+        'Fruits': ['Fresh Apples', 'Ripe Bananas', 'Sweet Grapes', 'Juicy Oranges', 'Strawberries', 'Blueberries', 'Pineapple', 'Mango', 'Kiwi', 'Watermelon'],
+        'Vegetables': ['Organic Carrots', 'Broccoli', 'Spinach', 'Bell Peppers', 'Cucumbers', 'Tomatoes', 'Onions', 'Potatoes', 'Lettuce', 'Garlic'],
+        'Dairy': ['Whole Milk', 'Greek Yogurt', 'Cheddar Cheese', 'Butter', 'Cottage Cheese', 'Mozzarella', 'Sour Cream', 'Heavy Cream', 'Parmesan', 'Eggs'],
+        'Bakery': ['Whole Wheat Bread', 'Bagels', 'Croissants', 'Muffins', 'Donuts', 'Cinnamon Rolls', 'Sourdough Bread', 'Pita Bread', 'Tortillas', 'Cookies'],
+        'Meat': ['Chicken Breast', 'Ground Beef', 'Salmon Fillet', 'Bacon', 'Pork Chops', 'Turkey', 'Steak', 'Sausages', 'Ham', 'Tuna'],
+        'Beverages': ['Orange Juice', 'Coffee', 'Green Tea', 'Mineral Water', 'Soda', 'Energy Drink', 'Almond Milk', 'Hot Chocolate', 'Iced Tea', 'Apple Juice'],
+        'Snacks': ['Potato Chips', 'Chocolate Bars', 'Popcorn', 'Nuts Mix', 'Granola Bars', 'Pretzels', 'Crackers', 'Cookies', 'Trail Mix', 'Rice Cakes'],
+        'Frozen': ['Frozen Pizza', 'Ice Cream', 'Frozen Vegetables', 'Frozen Berries', 'Chicken Nuggets', 'Fish Sticks', 'Frozen Meals', 'Frozen Yogurt', 'Popsicles', 'Waffles'],
+        'Personal Care': ['Hand Soap', 'Shampoo', 'Toothpaste', 'Deodorant', 'Body Wash', 'Shaving Cream', 'Mouthwash', 'Sunscreen', 'Lotion', 'Conditioner'],
+        'Grains': ['Brown Rice', 'Pasta', 'Quinoa', 'Oats', 'Cereal', 'Flour', 'Lentils', 'Beans', 'Couscous', 'Barley']
+    };
+    
+    // Generate sample products
+    allProducts = [];
+    let id = 1;
+    
+    SAMPLE_CATEGORIES.forEach(category => {
+        const categoryProducts = FOOD_PRODUCTS[category] || [`${category} Item`];
+        
+        // Use actual product names instead of generic names
+        categoryProducts.forEach((productName, index) => {
+            // Only add up to 10 products per category or all available products
+            if (index < 10) {
+                allProducts.push({
+                    id: id++,
+                    name: productName,  // Using actual product names
+                    category: category,
+                    price: parseFloat((Math.random() * 10 + 1).toFixed(2)),
+                    rating: parseFloat((Math.random() * 1.5 + 3.5).toFixed(1)),
+                    popularity: ["Low", "Medium", "High"][Math.floor(Math.random() * 3)]
+                });
+            }
+        });
+    });
+    
+    filteredProducts = [...allProducts];
+    setupPagination();
+    goToPage(1);
+    updateDisplayCount();
+    
+    // Update stats
+    elements.productCount.textContent = allProducts.length;
+    elements.categoryCount.textContent = categories.length;
+}
             
             filteredProducts = [...allProducts];
             setupPagination();
@@ -929,7 +961,7 @@
             // Update stats
             elements.productCount.textContent = allProducts.length;
             elements.categoryCount.textContent = categories.length;
-        }
+        
         
         // Setup event listeners
         function setupEventListeners() {
